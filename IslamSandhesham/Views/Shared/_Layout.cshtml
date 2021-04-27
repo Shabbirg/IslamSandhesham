@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islamic Knowledge</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @*For Fonts*@
+    <link rel="preconnect" href="https://fonts.gstatic.com">   
+    <link href="~/Content/teluguFont.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Lateef&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: url('../../Content/whole_bg.png');
+            /*background: #00bf8f;
+               background: -webkit-linear-gradient(to right, #001510, #00bf8f);
+               background: linear-gradient(to right, #001510, #00bf8f);
+               color: wheat;*/
+            /*background: #FEAC5E;
+               background: -webkit-linear-gradient(to right, #4BC0C8, #C779D0, #FEAC5E);
+               background: linear-gradient(to right, #4BC0C8, #C779D0, #FEAC5E);*/
+        }
+
+        .td-ellipse {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .bg-indo {
+            /*background: #ba89b6 !important;*/
+            background: #17a2b8 !important;
+        }
+
+        .loading {
+            height: 0;
+            width: 0;
+            padding: 15px;
+            border: 6px solid #ccc;
+            border-right-color: #888;
+            border-radius: 22px;
+            -webkit-animation: rotate 1s infinite linear;
+            /* left, top and position just for the demo! */
+            position: absolute;
+            left: 50%;
+            top: 50%;
+        }
+
+        .qh-header {
+            background: repeat-x url('../Content/bg_icon.png'), repeat-x url('../Content/bg_vertical.png');
+            background-image: url('../Content/bg_icon.png'), url('../Content/bg_vertical.png');
+            background-position-x: initial, initial;
+            background-position-y: initial, initial;
+            background-size: initial, initial;
+            background-repeat-x: repeat, repeat;
+            background-repeat-y: no-repeat, no-repeat;
+            background-attachment: initial, initial;
+            background-origin: initial, initial;
+            background-clip: initial, initial;
+            background-color: initial;
+        }
+
+        @@-webkit-keyframes rotate {
+            /* 100% keyframe for  clockwise.
+        use 0% instead for anticlockwise */
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body class="pt-0">
+    <div class="qh-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <img src="~/Content/logo.png" style="height:112px;max-width:100%;" />
+            
+        </nav>
+    </div>
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-indo">
+        
+        <a class="navbar-brand text-white" href="~/Home/Index">Islam Sandesham</a>
+        <br />
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link text-white" href="~/Home/Index">Home </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="~/Home/About">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  text-white" href="~/Home/Index/#contactSection">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  text-white" href="~/Home/QnA">Questions and Answers</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container body-content">
+        <div class="loading" id="loader"></div>
+        @RenderBody()
+       
+        <hr />
+        <footer>
+            <div class="row col-12">
+                <p class="col-6">&copy; @DateTime.Now.Year - Islam Sandesham</p>
+            </div>
+           
+        </footer>
+    </div>
+  
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

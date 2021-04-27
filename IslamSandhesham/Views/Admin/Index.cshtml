@@ -1,0 +1,54 @@
+﻿@model IEnumerable<IslamSandhesham.Models.Admin>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="mt-2 bg-light p-2 text-dark text-center mt-5">Users List</h2>
+
+<p>
+    <button class="btn btn-info d-none" onclick="location.href='@Url.Action("Create", "Admin")';return false;">Create New</button>
+</p>
+<table class="table table-bordered table-hover table-striped bg-white">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Password)
+        </th>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.LastLoginTime)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.LastLoginTime)
+            </td>
+            <td>
+                <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit", "Admin")/?id=@item.id';return false;">Edit</button>
+                <button class="btn btn-danger btn-sm d-none" onclick="location.href='@Url.Action("Delete", "Admin")?id=@item.id';return false;">Delete</button>
+            </td>
+        </tr>
+    }
+
+</table>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#loader").hide();
+    });
+</script>

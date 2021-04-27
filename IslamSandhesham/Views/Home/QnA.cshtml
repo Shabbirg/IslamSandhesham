@@ -1,0 +1,61 @@
+﻿@model IEnumerable<IslamSandhesham.Models.Questions_Answers>
+<style>
+    [data-toggle="collapse"] .fa:before {
+        content: "\f139";
+    }
+
+    [data-toggle="collapse"].collapsed .fa:before {
+        content: "\f13a";
+    }
+</style>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+<div class=" bg-info mt-5 p-3 text-white">
+    <h4>Questions And Answers</h4>
+</div>
+<div class=" mt-5">
+    <div id="accordion">
+        @{ int count = 0;}
+        @foreach (var item in Model)
+        {
+
+            <div class="card">
+                <div class="card-header bg-indo" id="headingOne_@item.Key" data-toggle="collapse" data-target="#collapseOne_@item.Key" aria-expanded="true" aria-controls="collapseOne_@item.Key">
+                    <h5 class="mb-0 ">
+
+                        <span class="btn col-12 col-md-6 text-left text-white">
+                            <i class="fa" aria-hidden="true"></i>
+                            @item.Question
+                        </span>
+                        <span class="btn text-white text-right col-12 col-md-5"> <span class="text-right">asked by <b>@item.Name (@item.Email) on @item.Date</b></span></span>
+                    </h5>
+
+                </div>
+
+                <div id="collapseOne_@item.Key" class="collapse @((count == 0) ? "show" : "")" aria-labelledby="headingOne_@item.Key" data-parent="#accordion">
+
+                    @if (item.Answer != null)
+                    {<div class="card-body" style="text-indent:3em">
+                            @item.Answer
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-body text-center">
+                            <span class="text-center">(No Answer Yet)</span>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            count++;
+
+        }
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#loader").hide();
+    });
+</script>

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<IslamSandhesham.Models.Buttons>
+@{
+    ViewBag.Title = "Cards";
+}
+@*<style type="text/css">
+    .btnImgBackground {
+       
+        background-image: url('../../Images/170421_032225_MicrosoftTeams-image.png');
+        cursor: pointer;
+        border: none;
+    }
+</style>*@
+
+<h3 class="mt-5 text-light bg-info p-2 font-italic text-center">Sub Topics </h3>
+
+<div class="mt-3">
+    @foreach (var item in Model)
+    {
+        <button class="btn col-5 col-md-3 p-3 m-2" style="font-weight:bold;font-size:20px;width:1000px;color:#ffd07b;background-color:#344f5b" id="@item.SectionId" onclick="getContent(@item.id)">@item.Name</button>
+    }
+</div>
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#loader").hide();
+    });
+    function getContent(id) {
+        window.location.href = '/Home/Info?id=' + id;
+    }
+</script>

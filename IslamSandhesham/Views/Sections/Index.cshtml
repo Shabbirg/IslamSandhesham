@@ -1,0 +1,64 @@
+﻿@model IEnumerable<IslamSandhesham.Models.Sections>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Sections</h2>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+
+<button class="btn btn-info" onclick="location.href='@Url.Action("Create", "Sections")';return false;">Create New</button>
+<div class="border border-info mt-5">
+    <table class="table table-bordered table-hover table-striped w-100 bg-light">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SectionId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SectionId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClassName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.id })*@
+                    <button class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("Edit", "Sections")/?id=@item.id';return false;">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("Delete", "Sections")?id=@item.id';return false;">Delete</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#loader").hide();
+    });
+</script>

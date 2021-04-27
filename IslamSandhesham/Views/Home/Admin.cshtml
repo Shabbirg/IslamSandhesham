@@ -1,0 +1,96 @@
+﻿
+@{Layout = "";}
+<style>
+
+    #msform {
+        width: 50%;
+        margin: 50px auto;
+        text-align: center;
+        position: relative;
+    }
+
+        #msform fieldset {
+            background: white;
+            border: 0 none;
+            border-radius: 3px;
+            box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+            padding: 20px 30px;
+            box-sizing: border-box;
+            width: 100%;
+            position: absolute;
+        }
+
+            #msform fieldset:not(:first-of-type) {
+                display: none;
+            }
+</style>
+@Styles.Render("~/Content/css")
+<body>
+    <br />
+    <br />
+    <br />
+    <br />
+    <div id="loginError" class="bg-light text-danger font-weight-bold text-center p-3 d-none">
+        <h3>*You Entered Invalid Login Details</h3>
+        <p></p>
+        <p>*Please Enter Valid Login Details to Proceed...</p>
+    </div>
+    <div id="sessionError" class="bg-light text-danger font-weight-bold text-center p-3 d-none">
+        <h3>Please Login to Proceed..</h3>        
+    </div>
+    <div id="msform" class="bg-info">
+        <fieldset class="bg-info col-12">
+            <h2 class="text-white">Login</h2>
+            <div class="input-group input-group-lg ">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"> </span></span>
+                <input type="text" class="form-control col-12" placeholder="User Name" id="usrName">
+            </div><br>
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"> </span></span>
+                <input type="password" class="form-control col-12" placeholder="Password" id="pwd">
+            </div>
+            <br>
+            <input type="button" class="btn btn-success" onclick="Login()" value="Login">
+        </fieldset>
+    </div>
+    <br />
+
+
+</body>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#loader").hide();
+        var searchParams = new URLSearchParams(window.location.search);
+        var res = searchParams.get("isLogin");
+        if (res == 'False') {
+            $("#sessionError").removeClass("d-none");
+        }
+    });
+    function Login() {
+        var log = {};
+        log.UserId = $("#usrName").val();
+        log.Password = $("#pwd").val();
+        $.ajax({
+            url: "/Home/Login/",
+            type: "POST",
+            data: '{logData: ' + JSON.stringify(log) + '}',
+            contentType: "application/json;charset=UTF-8",
+            // contentType: "text/plain",
+            dataType: "json",
+            success: function (result) {
+                if (result == true) {
+                    window.location = "/Home/Master";
+                }
+                else {
+                    $("#loginError").removeClass("d-none");
+                    $("#sessionError").addClass("d-none");
+                }
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>

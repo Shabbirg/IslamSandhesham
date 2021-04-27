@@ -1,0 +1,301 @@
+﻿@model IEnumerable<IslamSandhesham.Models.Content>
+@{
+    ViewBag.Title = "Content";
+}
+
+<div class="mt-5 bg-info text-white text-center">
+    <h2 class="p-2">Content Data</h2>
+</div>
+
+
+<div class="col-md-12 row">
+    <div class="col-sm-12 row">
+        <button type="button" class="btn btn-info my-2 col-4 col-md-4" data-toggle="modal" data-target="#createCntModal" onclick="createMode()">Add New </button>
+        <span class="my-2 col-5 col-md-4">@Html.DropDownList("SectionListId", (SelectList)ViewBag.SectionsList, "--Select Section--", new { @class = "form-control bg-info text-white ", id = "SectionListId" })</span>
+        <span class="my-2 col-3 col-md-3"><a href="~/Home/Master" class="text-white  btn btn-info">Home</a></span>
+    </div>
+    <input type="text" id="cntId" hidden />
+    <div class="col-12">
+        <input type="text" id="btnId" hidden />
+        <table class="table table-bordered table-hover   table-striped   text-center bg-light ">
+            <tr class="bg-info text-white">
+                <th class="text-center">
+                    Content Heading
+                </th>
+                <th class="text-center">
+                    Content Info
+                </th>
+                <th class="text-center">
+                    Button Name (Section Name)
+                </th>
+                <th class="text-center">Edit</th>
+                <th class="text-center">Delete</th>
+            </tr>
+
+            @foreach (var item in Model.OrderBy(w => w.Button_Id))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Heading)
+                    </td>
+                    <td class="td-ellipse ">
+                        @*@Html.DisplayFor(modelItem => item.Info)*@
+                        @Html.Raw(Server.HtmlDecode(item.Info))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Button.Name)
+                        (@Html.DisplayFor(modelItem => item.Button.Section.Description))
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-primary" onclick="editBtn(@item.id)" data-toggle="modal" data-target="#createCntModal">Edit</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="deleteBtn(@item.id)" data-toggle="modal" data-target="#deleteBtnModal">Delete</button>
+                    </td>
+                </tr>
+            }
+
+        </table>       
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="createCntModal" tabindex="-1" role="dialog" aria-labelledby="createCntModalLabel" aria-hidden="true" style="width:97%">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">New Content</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body col-sm-12 row">
+                    <div class="col-sm-3"><label>Section Id:</label></div>
+                    <div class="col-sm-8">@Html.DropDownList("SectionNameVal", (SelectList)ViewBag.SectionsList, "--Select Section--", new { @class = "form-control", id = "SectionNameVal" })</div>
+                    <br />
+                </div>
+                <div class="modal-body col-sm-12 row">
+                    <div class="col-sm-3"><label>Image Id:</label></div>
+                    <div class="col-sm-8">
+                        <select id="ImageList" class="form-control">
+                            <option value="0">--Select Image--</option>
+                            <option value="1">Image 1</option>
+                            <option value="2">Image 2</option>
+                            <option value="3">Image 3</option>
+                            <option value="4">Image 4</option>
+                            <option value="5">Image 5</option>
+                            <option value="6">Image 6</option>
+                            <option value="7">Image 7</option>
+                            <option value="8">Image 8</option>
+                            <option value="9">Image 9</option>
+                            <option value="10">Image 10</option>
+                            <option value="11">Image 11</option>
+                            <option value="12">Image 12</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-body col-sm-12 row">
+                    <div class="col-sm-3"><label> Button:</label></div>
+                    <div class="col-sm-8">@Html.DropDownList("ButtonListId", (SelectList)ViewBag.ButtonsList, "--Select Button--", new { @class = "form-control", id = "ButtonListId" })</div>
+                </div>
+                <div class="modal-body col-sm-12 row">
+                    <div class="col-sm-3"><label>Content Heading:</label></div>
+                    <div class="col-sm-8"><input type="text" class="form-control" id="ContentHeadingVal" /></div>
+                </div>
+                <div class="modal-body col-sm-12 row">
+                    <div class="col-sm-3"><label>Arabic Text:</label></div>
+                    <div class="col-sm-8">
+                        @Html.TextArea("ArabicText", new {@class="form-control col-sm-12", @id = "ArabicText" })
+                    </div>
+                    <br />
+                </div>
+                <div class="modal-body col-sm-12 row">
+                    <div class="col-sm-3"><label>Content Info:</label></div>
+                    <div class="col-sm-8">
+                        @Html.TextArea("ContentInfo", new { @class = "ckeditor2", @id = "ContentInfo" })
+                        @*<textarea class="form-control ckeditor" name="ContentInfo" id="ContentInfo" rows="5"></textarea>*@
+                    </div>
+                    <br />
+                </div>
+                @*<script>
+            CKEDITOR.replace("ContentInfo");
+        </script>*@
+                @*<div>
+            <input type="file" name="images[]" id="files" multiple />
+        </div>*@
+                <br />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="SaveContent()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<input type="button" onclick="test()" />*@
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Theme/CKEDITOR/ckeditor/ckeditor.js"></script>
+<script>
+    //extra
+    //var fileCollections = [];
+    //$('#files').on('change', function (e) {
+
+    //    var files = e.target.files;
+    //    fileCollections.push(files[0]);
+    //    console.log(fileCollections);
+    //})
+    $(document).ready(function () {
+        $("#loader").hide();
+        $('#SectionListId').append('<option value="null">' + "Select All" + '</option>');
+
+        CKEDITOR.replace("ContentInfo");
+    });
+    
+    function createMode() {
+        $("#ButtonListId").val('');
+        $("#SectionNameVal").val('');
+        $("#ContentHeadingVal").val('');
+        $("#ContentInfo").val('');
+        $("#ArabicText").val('');
+        opType = 1;
+        $("#cntId").val('');
+    }
+    $("#SectionNameVal").change(function () {
+        $.ajax({
+            url: "/Home/getSectionBasedButton/",
+            type: "GET",
+            data: {
+                id: $("#SectionNameVal").val(),
+            },
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#ButtonListId').empty();
+                $('#ButtonListId').append('<option value="">' + "--Select Button--" + '</option>');
+                $.each(result, function (index, value) {
+                    $('#ButtonListId').append('<option value="' + value.Value + '">' + value.Text + '</option>');
+                    // $('#ButtonList').val(value.value);
+                });
+            },
+            error: function () {
+            }
+        });
+
+    });
+
+    $("#ImageList").change(function () {
+        $.ajax({
+            url: "/Home/getImageBasedButton/",
+            type: "GET",
+            data: {
+                id: $("#ImageList").val(),
+            },
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#ButtonListId').empty();
+                $('#ButtonListId').append('<option value="">' + "--Select Button--" + '</option>');
+                $.each(result, function (index, value) {
+                    $('#ButtonListId').append('<option value="' + value.Value + '">' + value.Text + '</option>');
+                    // $('#ButtonList').val(value.value);
+                });
+            },
+            error: function () {
+            }
+        });
+
+    });
+
+    var opType = 1;
+    function SaveContent() {       
+        for (instance in CKEDITOR.instances) {
+            CKEDITOR.instances[instance].updateElement();
+        }
+
+        var cnt = {};
+        cnt.Button_Id = $("#ButtonListId").val();
+        cnt.SectionId = $("#SectionNameVal").val();
+        cnt.Heading = $("#ContentHeadingVal").val();
+        cnt.info = $("#ContentInfo").val();
+        cnt.ArabicText = $("#ArabicText").val();
+        cnt.Type = opType;
+        cnt.id = $("#cntId").val();
+        cnt.ImageId = $("ImageList").val();
+
+        $.ajax({
+            url: "/Home/SaveContent/",
+            type: "POST",
+            data: '{cnt: ' + JSON.stringify(cnt) + '}',
+            contentType: "application/json;charset=UTF-8",
+            // contentType: "text/plain",
+            dataType: "json",
+            success: function (result) {
+                $("#createCntModal").hide();
+                alert("successfully saved");
+                location.reload(true);
+            },
+            error: function () {
+
+            }
+        });
+    }
+    function editBtn(btnId) {
+        $.ajax({
+            url: "/Home/getContentData/",
+            type: "GET",
+            data: {
+                id: btnId,
+            },
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                opType = 2;
+                $("#ButtonListId").val(result.Button_Id),
+                    $("#SectionNameVal").val(result.SectionId),
+                    $("#ImageList").val(result.ImageId),
+                    $("#ContentHeadingVal").val(result.Heading),
+                    $("#ContentInfo").val(result.Info),
+                    $("#ArabicText").val(result.ArabicText),
+                    $("#cntId").val(result.id),
+                //CKEDITOR.instances[ContentInfo].setData(result.Info)
+                   // CKEDITOR.instances.ContentInfo.insertText(result["Info"]);
+                    CKEDITOR.instances['ContentInfo'].setData(result.info);
+            },
+            error: function () {
+
+            }
+        });
+    }
+    function deleteBtn(Id) {
+        var cnt = {};
+        cnt.id = Id;
+        var result = confirm("Are you sure you want to delete?");
+        if (result == true) {
+
+
+            $.ajax({
+                url: "/Home/DeleteContent/",
+                type: "POST",
+                data: '{content: ' + JSON.stringify(cnt) + '}',
+                contentType: "application/json;charset=UTF-8",
+                //contentType: "text/plain",
+                dataType: "json",
+                success: function (result) {
+                    alert("successfully Deleted");
+                    location.reload(true);
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+    }
+    $("#SectionListId").change(function () {
+        var id = $("#SectionListId").val();
+        window.location.href = '/Home/Content/' + id;      //'/Home/Info/?id='+ id;
+    });
+
+</script>

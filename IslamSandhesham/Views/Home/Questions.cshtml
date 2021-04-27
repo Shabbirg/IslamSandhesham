@@ -1,0 +1,114 @@
+﻿@model IEnumerable<IslamSandhesham.Models.Questions_Answers>
+@{
+    ViewBag.Title = "Questions";
+    string currentQuestion = "";
+}
+<div class="bg-white p-3 w-100">
+    <span class="mt-3 col-3 col-md-3 pull-right"><a href="~/Home/Master" class="text-white  btn btn-info">Home</a></span>
+
+    <h4 class="mt-5 bg-info text-white p-2">Questions And Contacts</h4>
+    
+    @foreach (var item in Model)
+    {
+        <div style="font-size:13px !important">
+            <div>
+                <h5>@item.Question</h5>
+                <p>Asked by  @item.Name (@item.Email) at @item.Date</p>
+            </div>
+
+            @if (item.Type == 2)
+            { 
+                <span>[Posted Message]</span>
+            }
+            else if (item.Answer == null || item.Answer == "")
+            {
+                <button class="btn btn-info" data-toggle="modal" data-target="#askQuestionModal" onclick="setData(@item.Key)">Add Answer</button>
+                currentQuestion = item.Question;
+            }
+            else
+            {
+                <p>@item.Answer</p>
+                <button class="btn btn-info" data-toggle="modal" data-target="#askQuestionModal" onclick="getItemData(@item.Key)">Edit Answer</button>
+            }
+        </div>
+        <br />
+    }
+</div>
+
+<div class="modal fade modal col-12" id="askQuestionModal" tabindex="-1" role="dialog" aria-labelledby="createBtnModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h3 class="modal-title" id="exampleModalLabel">Answer Question?</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body ">                
+                <div><span id="Question" class="font-weight-bold"></span></div>
+                <div class="col-sm-4"><label>Your Answer:</label></div>
+                <div> <textarea class="form-control" placeholder="Write your message here..." name="myAnswer" id="myAnswer" cols="30" rows="10" style="max-width:100%"></textarea></div>
+                <input type="hidden" id="pkey" />
+            </div>
+            <div class="modal-body col-sm-12 row">
+
+            </div>
+            <br />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveAnswer()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#loader").hide();
+    });
+    function setData(id) {          
+       $("#pkey").val(id);
+      $("#Question").text("@currentQuestion");
+    };
+
+    function getItemData(id) {
+        $.ajax({
+            url: "/Home/getQuestionData/",
+            type: "GET",
+            data: { id: id },
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $("#myAnswer").val(result.Answer);
+                $("#Question").text(result.Question);
+                $("#pkey").val(result.Key);
+            },
+            error: function () {
+
+            }
+        })
+    };
+    function saveAnswer() {
+        var qn = {};
+        qn.Answer = $("#myAnswer").val();
+        qn.Key = $("#pkey").val();
+       
+        $.ajax({
+            url: "/Home/SaveAnswer/",
+            type: "POST",
+            data: '{data: ' + JSON.stringify(qn) + '}',
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $("#askQuestionModal").hide();
+                alert("successfully saved");
+                location.reload(true);
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>

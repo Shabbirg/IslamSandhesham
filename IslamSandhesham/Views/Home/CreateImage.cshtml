@@ -1,0 +1,83 @@
+﻿@model IslamSandhesham.Models.Images
+@{
+    ViewBag.Title = "Create";
+}
+<h2 class="mt-5">Upload Image or File</h2>
+@using (Html.BeginForm("UploadImage", "Home", null, FormMethod.Post,
+                              new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+<fieldset>
+
+
+       
+        <div class="">
+            @Html.TextBoxFor(model => model.id, new { @class = "d-none" })
+        </div>
+    
+
+    <div class="mt-5">
+        <div class=" font-weight-bold">Description:</div>
+        <div class="">
+            @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+            @Html.ValidationMessage("Description")
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <div class=" font-weight-bold">Type:</div>
+        @Html.DropDownList("Type", new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Main Slide", Value = "1"},
+            new SelectListItem { Text = "Heading Images", Value = "2"},
+            new SelectListItem { Text = "Document Files", Value = "3"}
+        }, "Select Type of Image", new { @class = "form-control" })
+    </div>
+    <div class="editor-field mt-2">
+        <div class=" font-weight-bold">Select Image:</div>
+        <input id="ImagePath" title="Upload a product image"
+               type="file" name="file" class="btn btn-warning" />
+    </div>
+    <div class="mt-5">
+        <p><input type="submit" value="Upload" class="btn btn-primary text-center" /></p>
+    </div>
+
+</fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $("#loader").hide();
+            $("#id").val(0)
+            var searchParams = new URLSearchParams(window.location.search);
+            var res = searchParams.get("id");
+            if (res > 0) {
+                getImgData(res);
+            }
+        });
+
+        function getImgData(btnId) {
+            $.ajax({
+                url: "/Home/GetImageData/",
+                type: "GET",
+                data: {
+                    id: btnId,
+                },
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {  
+                    $("#Type").val(result.Type),
+                        $("#Description").val(result.Description),
+                        $("#id").val(result.id)
+                },
+                error: function () {
+
+                }
+            });
+        }
+    </script>
+
+}

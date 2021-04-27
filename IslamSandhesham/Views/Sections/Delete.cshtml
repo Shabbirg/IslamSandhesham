@@ -1,0 +1,47 @@
+﻿@model IslamSandhesham.Models.Sections
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<h3 class="text-danger">Are you sure you want to delete this?</h3>
+<hr />
+<div class="border border-info">
+
+    <dl class="dl-horizontal m-4">
+        <dt>
+            @Html.DisplayNameFor(model => model.SectionId) :  @Html.DisplayFor(model => model.SectionId)
+        </dt>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description) : @Html.DisplayFor(model => model.Description)
+        </dt>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassName) :  @Html.DisplayFor(model => model.ClassName)
+        </dt>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Type) :  @Html.DisplayFor(model => model.Type)
+        </dt>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color m-4">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <button class="btn btn-warning ml-3" onclick="location.href='@Url.Action("Index", "Sections")';return false;">Back to Sections</button>
+        </div>
+    }
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#loader").hide();
+    });
+</script>
